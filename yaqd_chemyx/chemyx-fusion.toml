@@ -1,6 +1,6 @@
 protocol = "chemyx-fusion"
-doc = ""
-traits = ["is-daemon"]
+doc = "Simple daemon for controlling Chemyx programmable syringe pumps."
+traits = ["has-position", "has-limits", "uses-serial", "uses-uart", "is-daemon"]
 
 [links]
 source = "https://gitlab.com/yaq/yaqd-chemyx"
@@ -8,10 +8,36 @@ bugtracker = "https://gitlab.com/yaq/yaqd-chemyx/-/issues"
 
 [installation]
 PyPI = "https://pypi.org/project/yaqd-chemyx"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-chemyx"
 
 [config]
 
-[state]
+[config.diameter]
+doc = "Inside diameter of syringe."
+type = "double"
 
 [messages]
 
+[messages.purge]
+doc = "Fully inject the pump."
+request = []
+
+[messages.prime]
+doc = "Fully withdraw the pump."
+request = []
+
+[messages.get_rate]
+doc = "Get current rate, in units specified within config."
+response = "double"
+
+[messages.set_rate]
+doc = "Set current rate, in units specified within config."
+request = [{"name"="rate", "type"="double"}]
+
+[fields]
+
+[fields.rate]
+type = "double"
+getter = "get_rate"
+setter = "set_rate"
+kind = "normal"
