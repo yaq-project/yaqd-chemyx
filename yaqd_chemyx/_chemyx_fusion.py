@@ -48,39 +48,6 @@ class ChemyxFusion(IsDaemon):
         self._ser.write(f"set rate {rate}".encode())
 
     async def update_state(self):
-        # TODO: call "view parameter", parse
         while True:
-            start_position = self._state["position"]
-            while True:
-                prompt, alarm, out = await self._write("DIS")
-                if alarm is not None:
-                    continue
-                self.logger.debug(f"{prompt}, {alarm}, {out}")
-                if not out.startswith("I"):
-                    continue
-                # prompt
-                self._busy = prompt not in ("S", "P")
-                # get current position
-                try:
-                    match = dis_regex.match(out)
-                    infused = float(match[1])
-                    withdrawn = float(match[2])
-                    self._state["position"] = start_position - infused + withdrawn
-                except (ValueError, TypeError) as e:
-                    self.logger.error(e)
-                    continue
-                if not self._busy:
-                    break
-            # purging: once done, position goes to 0
-            if self._purging:
-                await self._write("STP")
-                self._purging = False
-                self._state["position"] = 0
-                self._state["destination"] = 0
-            # once busy is released, clear values from pump
-            await self._write("CLD INF")
-            await self._write("CLD WDR")
-            try:
-                await asyncio.wait_for(self._busy_sig.wait(), timeout=5.0)
-            except asyncio.TimeoutError:
-                pass
+            out = self._ser.write_then_read("view parameter")
+            print(out)
