@@ -1,0 +1,17 @@
+protocol = "chemyx-fusion"
+doc = ""
+traits = ["is-daemon"]
+
+[links]
+source = "https://gitlab.com/yaq/yaqd-chemyx"
+bugtracker = "https://gitlab.com/yaq/yaqd-chemyx/-/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-chemyx"
+
+[config]
+
+[state]
+
+[messages]
+
