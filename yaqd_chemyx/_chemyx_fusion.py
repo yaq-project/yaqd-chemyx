@@ -5,6 +5,7 @@ from typing import Dict, Any, List
 
 from yaqd_core import IsDaemon, HasPosition, HasLimits, UsesSerial, UsesUart, aserial
 
+
 class ChemyxFusion(IsDaemon):
     _kind = "chemyx-fusion"
 
